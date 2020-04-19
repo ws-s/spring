@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd">
+   <!-- 配置dao -->
+   <bean id="userDao" class="day2.dao.impl.UserDaoImpl"/>
+   <!-- 配置service -->
+   <bean id="userService" class="day2.service.impl.UserServiceImpl">
+   		<!-- 因为在service中dao的属性我们使用的是get和set，我们就使用设置的形式引用 -->
+   		<property name="userDao" ref="userDao"/>
+   </bean>
+   <!-- 配置增强的切面类 -->
+   <bean id="afterLogger" class="day2.boost.AfterLogger"/>
+   <bean id="aroundLog" class="day2.boost.AroundLogger"/>
+   <!-- 配置横切面 -->
+   <aop:config>
+   		<!-- 配置切入点,在调用什么方法是执行这个操作 -->
+   		<!-- * day2..*.*(..)
+   			对包day2下面以及它的所有字包中所有类里面的所有方法，并不考虑参数的个数和类型
+   		 -->
+   		<aop:pointcut expression="execution(* day2..*.*(..))" id="myPoint"/>
+   		<!-- 配置异常增强 -->
+   		<aop:aspect ref="aroundLog">
+   			<!-- 配置增强类型 -->
+   			<!-- <aop:after method="afterLog" pointcut-ref="myPoint"/> -->
+   			<aop:around method="aroundLog" pointcut-ref="myPoint"/>
+   		</aop:aspect>
+   </aop:config>
+</beans>       

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd">
+  	<!-- 定义dao中的组件 -->
+  	<bean id="userDao" class="aop.dao.impl.UserDaoImpl"/>
+  	<!-- 定义service组件 -->
+  	<bean id="userService" class="aop.service.impl.UserServiceImpl">
+  		<!-- 关联userDao属性 -->
+  		<property name="userDao" ref="userDao"/>
+  	</bean>
+  	
+  	<!-- 配置业务日志类组件 -->
+  	<bean id="theLogger" class="aop.logger.UserServiceLogger"/>
+  	
+  	<!-- 配置AOP(面向切面) -->
+  	<!-- 定义切面 -->
+  	<aop:config>
+  		<!-- 配置切入点 在哪一个方法上置入我们的共有方法
+  			expression:定义使用共有方法的方法名全路径
+  			id:标识的一个位置
+  		 -->
+  		<!-- 书写具体方法切入点的定义 -->
+  		<!-- <aop:pointcut expression="execution(public void saveUser(aop.pojo.User))" id="myPoint"/> -->
+  		<!-- 这个*就代表 所有的返回类型都支持 -->
+  		<!-- <aop:pointcut expression="execution(public * saveUser(aop.pojo.User))" id="myPoint"/> -->
+  		<!-- 所有的无返回值方法都支持 -->
+  		<!-- <aop:pointcut expression="execution(public void *(aop.pojo.User))" id="myPoint"/> -->
+  		<!-- aop.service包以及它的子包里面的所有方法并且方法中的参数不受限制的支持 -->
+  		<!-- 对指定根包以及所有子包下面所有方法并且方法中的参数不受限制的执行 -->
+  		<aop:pointcut expression="execution(* aop..*.*(..))" id="myPoint"/>
+  		<!-- 引用增强的方法
+  			ref:引用定义的公共模块bean信息
+  		 -->
+  		<aop:aspect ref="theLogger">
+  			<!-- 定义调用方法前执行的操作 -->
+  			<aop:before method="before" pointcut-ref="myPoint"/>
+  			<!-- 定义调用方法后执行的操作 -->
+  			<aop:after-returning method="after" pointcut-ref="myPoint" returning="result"/>
+  		</aop:aspect>
+  	</aop:config>
+  	
+</beans>       

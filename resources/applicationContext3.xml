@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+   <!-- 基于set方法的注入 -->
+   <!-- 为teacher类实现注入 -->
+   <bean id="t" class="day2.pojo.Teacher" p:id="1" p:tname="王老师"/>
+   <bean id="user" class="day2.pojo.User">
+   		<!-- 为name注入一个数据 -->
+   		<!-- <property name="name" value="张三"/> -->
+   		<!-- 基于构造的形式进行注入 -->
+   		<constructor-arg index="0" name="name" type="String" value="张三"/>
+   		<constructor-arg name="address" value="四川成都"/>
+   		<constructor-arg name="age">
+   			<value>18</value>
+   			<!-- 使用引用类型，使用其他的beanid -->
+   			<!-- <ref/> -->
+   		</constructor-arg>
+   		<!-- 为user类中的teacher元素赋值 -->
+   		<constructor-arg>
+   			<ref bean="t"/>
+   		</constructor-arg>
+   </bean>
+   
+   <!-- 使用P命名空间的形式实现数据的注入 -->
+   <bean id="user1" class="day2.pojo.User" p:name="李四" p:age="20" p:address="四川德阳" p:t-ref="t"/>
+   
+   <!-- userDao组件 -->
+   <bean id="userDao" class="day2.dao.impl.UserDaoImpl"/>
+   <!-- 配置userService组件 -->
+   <bean id="userService" class="day2.service.impl.UserServiceImpl" p:userDao-ref="userDao"/>
+   
+</beans>

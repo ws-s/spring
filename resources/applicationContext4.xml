@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+   
+   <bean id="user" class="day2.pojo.User" p:name="张三" p:age="18" p:address="四川乐山"/>     
+        
+   <bean id="entity" class="day2.pojo.TestEntity">
+	   <!-- 赋值特殊符号 -->
+   	   <!-- 使用CDATA特殊符号的注入 -->
+   	   <property name="specialCharacter1">
+   	   		<value><![CDATA[P&G]]></value>
+   	   </property>
+   	   <!-- 第二种为特殊符号注入数据的方式 
+   	   	  >   &gt;  <   &lt; &  &amp;
+   	   -->
+   	   <property name="specialCharacter2">
+   	   		<value>P&amp;G</value>
+   	   </property>
+   	   
+   	   <!-- 注入一个javaBean -->
+   	   <property name="innerBean">
+   	   		<!-- 1.直接配置一个bean节点 -->
+   	   		<!-- <bean class="day2.pojo.User" p:name="张三" p:age="18" p:address="四川乐山"/> -->
+   	   		<!-- 2.引用一个定义好的bean -->
+   	   		<ref bean="user"/>
+   	   		<!-- 3.引用定义好的bean -->
+   	   		<!-- <ref local="user"/> -->
+   	   		<!-- 
+   	   			local: 只能在当前的这个配置文件中进行查找
+   	   			bean：可以到其他的配置文件中进行查找
+   	   		 -->
+   	   </property>
+   	   
+   	   <!-- 为list集合注入数据 -->
+   	   <property name="list">
+   	   		<list>
+   	   			<!-- 为list集合添加数据 -->
+   	   			<value>苹果</value>
+   	   			<value>芒果</value>
+   	   		</list>
+   	   </property>
+   	   
+   	   <!-- 注入数组类型的数据 -->
+   	   <property name="array">
+   	   		<array>
+   	   			<value>红色</value>
+   	   			<value>蓝色</value>
+   	   		</array>
+   	   </property>
+   	   
+   	   <!-- 为set集合注入数据 -->
+   	   <property name="set">
+   	   		<set>
+   	   			<value>足球</value>
+   	   			<value>篮球</value>
+   	   		</set>
+   	   </property>
+   	   
+   	   <!-- 为map集合注入数据 -->
+   	   <property name="map">
+   	   		<map>
+   	   			<!-- entry 表示是map集合中一条数据 -->
+   	   			<entry>
+   	   				<!-- key就是map集合中的键值 -->
+   	   				<key><value>teacher</value></key>
+   	   				<!-- value就是key对应的数据 -->
+   	   				<value>老师</value>
+   	   			</entry>
+   	   			<entry>
+   	   				<key><value>student</value></key>
+   	   				<value>学生</value>
+   	   			</entry>
+   	   		</map>
+   	   </property>
+   	   
+   	   <!-- 为properties类型的数据注入数据
+   	   	properties 一种配置数据源的文件
+   	   	key=value
+   	    -->
+   	    <property name="props">
+   	    	<!-- props 表示可以注入多个key=value形式的数据 -->
+   	    	<props>
+   	    		<!-- prop 表示具体的一个key=value的数据 -->
+   	    		<prop key="driver">com.mysql.jdbc.Driver</prop>
+   	    		<prop key="url">jdbc:mysql://localhost:3306/test</prop>
+   	    	</props>
+   	    </property>
+   	    
+   	    <!-- 注入null值或空字符串 -->
+   	    <!-- 注入空字符串 -->
+   	    <property name="emptyValue">
+   	    	<value></value>
+   	    </property>
+   	    <!-- 注入null值 -->
+   	    <property name="nullValue">
+   	    	<null/>
+   	    </property>
+   </bean>  
+</beans>        

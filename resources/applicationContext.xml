@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 为SpringTest类中name属性赋值 -->
+    <!-- 
+    	id: 为这个对象取的一个唯一标识(对象名)
+    	class:指定这个对象是哪一个类的，给我的类的全路径
+     -->
+    <bean id="test" class="SpringTest">
+    	<!-- 为对象中的属性赋值
+    		property中有name、ref和value三个属性
+    		ref:引用其他的id(对象|组件)
+    		value:直接赋值
+    		name:要为哪一个属性名赋值
+    	 -->
+    	<property name="name" value="Hello Spring !!!"/>
+    </bean>    
+</beans>        
